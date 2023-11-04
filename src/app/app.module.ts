@@ -11,6 +11,24 @@ import { UserComponent } from './users/user/user.component';
 import { EditServerComponent } from './servers/edit-server/edit-server.component';
 import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
+import {RouterModule, Routes} from "@angular/router";
+
+const appRoutes: Routes = [
+  // localhost:4200/
+  { path: "", component: HomeComponent },
+  // localhost:4200/users
+  { path: "users", component: UsersComponent, children: [
+    // Start with /users -> users/:id/:name
+      { path: ":id/:name", component: UserComponent },
+    ] },
+  // localhost:4200/servers
+  { path: "servers", component: ServersComponent, children: [
+    // Both start with server/ implicitly
+      { path: ":id", component: ServerComponent },
+      { path: ":id/edit", component: EditServerComponent }
+    ] },
+
+];
 
 @NgModule({
   declarations: [
@@ -25,6 +43,7 @@ import { ServersService } from './servers/servers.service';
   imports: [
     BrowserModule,
     FormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ServersService],
   bootstrap: [AppComponent]
